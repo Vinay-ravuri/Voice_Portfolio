@@ -224,6 +224,8 @@ export default function HeroSection() {
               ref={videoRef}
               src="https://res.cloudinary.com/ak3cyoc9/video/upload/v1783098432/hero-intro_diu4na.mp4"
               loop
+              autoPlay
+              preload="auto"
               muted={isMuted}
               playsInline
               className="w-full max-h-[85vh] object-contain object-bottom pointer-events-none"

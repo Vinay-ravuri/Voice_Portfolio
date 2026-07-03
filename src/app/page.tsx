@@ -63,50 +63,47 @@ export default function Home() {
       {/* Premium Loading Sequence */}
       {isLoading && <PremiumLoader onComplete={() => setIsLoading(false)} />}
 
-      {/* Main content — fades in after loading */}
-      {!isLoading && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.0, ease: 'easeOut' }}
-        >
-          <Navbar />
-          <main className="flex flex-col w-full relative bg-[#FFFFFF]">
-            {/* Subtle global noise texture overlay */}
-            <div className="noise-overlay" aria-hidden="true" />
+      {/* Main content — preloads in background, fades in after loading */}
+      <div
+        className="transition-opacity duration-1000 ease-out"
+        style={{ opacity: isLoading ? 0 : 1, pointerEvents: isLoading ? 'none' : 'auto' }}
+      >
+        <Navbar />
+        <main className="flex flex-col w-full relative bg-[#FFFFFF]">
+          {/* Subtle global noise texture overlay */}
+          <div className="noise-overlay" aria-hidden="true" />
 
-            {/* S1: Hero */}
-            <HeroSection />
+          {/* S1: Hero */}
+          <HeroSection />
 
-            {/* S2: About */}
-            <AboutSection />
+          {/* S2: About */}
+          <AboutSection />
 
-            {/* S3: Education */}
-            <EducationSection />
+          {/* S3: Education */}
+          <EducationSection />
 
-            {/* S4: Skills */}
-            <SkillsSection />
+          {/* S4: Skills */}
+          <SkillsSection />
 
-            {/* S5: Projects */}
-            <ProjectsSection />
+          {/* S5: Projects */}
+          <ProjectsSection />
 
-            {/* S6: Experience */}
-            <ExperienceSection />
+          {/* S6: Experience */}
+          <ExperienceSection />
 
-            {/* S7: Certifications */}
-            <CertificationsSection />
+          {/* S7: Certifications */}
+          <CertificationsSection />
 
-            {/* S8: Coding Profiles */}
-            <CodingPlatformsSection />
+          {/* S8: Coding Profiles */}
+          <CodingPlatformsSection />
 
-            {/* S9: Achievements */}
-            <AchievementsSection />
+          {/* S9: Achievements */}
+          <AchievementsSection />
 
-            {/* S10: Contact */}
-            <ContactSection />
-          </main>
-        </motion.div>
-      )}
+          {/* S10: Contact */}
+          <ContactSection />
+        </main>
+      </div>
     </>
   );
 }
