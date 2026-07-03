@@ -74,7 +74,7 @@ export default function Home() {
           <div className="noise-overlay" aria-hidden="true" />
 
           {/* S1: Hero */}
-          <HeroSection />
+          <HeroSection active={!isLoading} />
 
           {/* S2: About */}
           <AboutSection />

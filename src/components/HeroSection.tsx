@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Download, Brain, Code, FileText, Layout } from 'lucide-react';
 
-export default function HeroSection() {
+export default function HeroSection({ active = true }: { active?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
 
@@ -31,7 +31,7 @@ export default function HeroSection() {
 
     // Unmute on first user interaction with the document (bypasses browser autoplay restrictions)
     const handleInteraction = () => {
-      if (video) {
+      if (video && active) {
         video.muted = false;
         setIsMuted(false);
         // Play unmuted if blocked
@@ -47,10 +47,13 @@ export default function HeroSection() {
       window.removeEventListener('mousedown', handleInteraction);
     };
 
-    window.addEventListener('click', handleInteraction);
-    window.addEventListener('touchstart', handleInteraction);
-    window.addEventListener('keydown', handleInteraction);
-    window.addEventListener('mousedown', handleInteraction);
+    // Only register listeners when the Hero Section becomes active/visible
+    if (active) {
+      window.addEventListener('click', handleInteraction);
+      window.addEventListener('touchstart', handleInteraction);
+      window.addEventListener('keydown', handleInteraction);
+      window.addEventListener('mousedown', handleInteraction);
+    }
 
     // Intersection observer to play/pause when in view
     const observer = new IntersectionObserver(
@@ -73,7 +76,7 @@ export default function HeroSection() {
       observer.disconnect();
       cleanupListeners();
     };
-  }, []);
+  }, [active]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
