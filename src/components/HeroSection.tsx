@@ -6,9 +6,8 @@ import { ArrowRight, Download, Brain, Code, FileText, Layout } from 'lucide-reac
 
 export default function HeroSection({ active = true }: { active?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
 
-  // Auto-play the video and handle audio toggle or play safety
+  // Auto-play the video and handle audio safety
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -18,23 +17,19 @@ export default function HeroSection({ active = true }: { active?: boolean }) {
     const playVideo = () => {
       // Attempt to play unmuted automatically
       video.muted = false;
-      setIsMuted(false);
       video.play().catch((err) => {
         console.log('Autoplay unmuted blocked, playing muted instead', err);
         video.muted = true;
-        setIsMuted(true);
         video.play().catch((err2) => {
           console.log('Autoplay failed completely', err2);
         });
       });
     };
 
-    // Unmute on first user interaction with the document (bypasses browser autoplay restrictions)
+    // Unmute on first user interaction (direct synchronous DOM change to bypass iOS Safari autoplay rules)
     const handleInteraction = () => {
       if (video && active) {
         video.muted = false;
-        setIsMuted(false);
-        // Play unmuted if blocked
         video.play().catch(() => {});
       }
       cleanupListeners();
@@ -47,7 +42,7 @@ export default function HeroSection({ active = true }: { active?: boolean }) {
       window.removeEventListener('mousedown', handleInteraction);
     };
 
-    // Only register listeners when the Hero Section becomes active/visible
+    // Only register interaction event listeners when section is ready/active
     if (active) {
       window.addEventListener('click', handleInteraction);
       window.addEventListener('touchstart', handleInteraction);
@@ -64,7 +59,6 @@ export default function HeroSection({ active = true }: { active?: boolean }) {
           } else {
             video.pause();
             video.muted = true;
-            setIsMuted(true);
           }
         });
       },
@@ -229,7 +223,7 @@ export default function HeroSection({ active = true }: { active?: boolean }) {
               loop
               autoPlay
               preload="auto"
-              muted={isMuted}
+              muted
               playsInline
               className="w-full max-h-[85vh] object-contain object-bottom pointer-events-none"
               style={{ mixBlendMode: 'multiply' }}
